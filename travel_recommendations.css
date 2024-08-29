@@ -58,7 +58,7 @@ nav a {
     width: 300px;
 }
 
-#btnSearch, #btnReset {
+#btnSearch, #btnReset, #btnBook {
     padding: 10px 15px;
     border: none;
     background-color: #16a085;
@@ -70,9 +70,65 @@ nav a {
     margin-left: 5px;
 }
 
-#btnSearch:hover, #btnReset:hover {
+#btnSearch:hover, #btnReset:hover, #btnBook:hover {
     background-color: #1abc9c;
 }
+
+.homePage {
+    background-image: url('HD-wallpaper-travel-agency.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    min-height: 100vh; /* Ensure the div takes up at least the full height of the viewport */
+    padding-top: 0; /* Ensure no top padding */
+}
+
+.homePage #homeSlogan {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding-top: 5%; /* Use padding instead of margin for top spacing */
+    margin-left: 10%;
+    font-weight: bold;
+    font-size: 70px;
+
+}
+
+.homePage #homeText{
+    margin-left: 10%
+}
+.homePage #btnBook{
+    margin-left: 10%;
+}
+
+
+
+.social-links {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #2c3e50;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .social-icon:hover {
+    background-color: #2c3e50;
+    color: white;
+  }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
