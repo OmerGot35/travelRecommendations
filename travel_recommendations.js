@@ -21,12 +21,24 @@ function matchKeyword(input, keywords) {
 // Function to filter recommendations based on keyword
 function filterRecommendations(data, searchQuery) {
     const results = {
+        beaches: [],
+        temples: [],
         cities: [],
         countries: []
     };
 
+    // Search for beaches
+    if (matchKeyword(searchQuery, ['beach', 'beaches'])) {
+        results.beaches = data.beaches.slice(0, 2); // Get first two beaches
+    }
+
+    // Search for temples
+    if (matchKeyword(searchQuery, ['temple', 'temples'])) {
+        results.temples = data.temples.slice(0, 2); // Get first two temples
+    }
+
     // Search for cities
-    const matchingCities = data.countries.flatMap(country => 
+    const matchingCities = data.countries.flatMap(country =>
         country.cities.filter(city => matchKeyword(city.name, [searchQuery]))
     );
 
@@ -84,7 +96,23 @@ function displayRecommendations(data, searchQuery) {
 
     // Display filtered results
     let resultsFound = false;
-    
+
+    // Display beach results
+    if (filteredResults.beaches.length > 0) {
+        filteredResults.beaches.forEach(beach => {
+            createResultElement(beach.name, beach.imageUrl, beach.description);
+            resultsFound = true;
+        });
+    }
+
+    // Display temple results
+    if (filteredResults.temples.length > 0) {
+        filteredResults.temples.forEach(temple => {
+            createResultElement(temple.name, temple.imageUrl, temple.description);
+            resultsFound = true;
+        });
+    }
+
     // Display city results
     if (filteredResults.cities.length > 0) {
         filteredResults.cities.forEach(city => {
