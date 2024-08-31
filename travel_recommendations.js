@@ -21,25 +21,26 @@ function matchKeyword(input, keywords) {
 // Function to filter recommendations based on keyword
 function filterRecommendations(data, searchQuery) {
     const results = {
-        beaches: [],
-        temples: [],
+        cities: [],
         countries: []
     };
 
-    if (matchKeyword(searchQuery, ['beach', 'beaches'])) {
-        results.beaches = data.beaches.slice(0, 2); // Get first two beaches
-    }
+    // Search for cities
+    const matchingCities = data.countries.flatMap(country => 
+        country.cities.filter(city => matchKeyword(city.name, [searchQuery]))
+    );
 
-    if (matchKeyword(searchQuery, ['temple', 'temples'])) {
-        results.temples = data.temples.slice(0, 2); // Get first two temples
-    }
+    if (matchingCities.length > 0) {
+        results.cities = matchingCities;
+    } else {
+        // Search for countries and return all cities within the matched country
+        const matchingCountry = data.countries.find(country =>
+            matchKeyword(searchQuery, [country.name])
+        );
 
-    if (matchKeyword(searchQuery, ['country', 'countries'])) {
-        results.countries = data.countries.slice(0, 2).map(country => ({
-            name: country.name,
-            imageUrl: country.imageUrl,
-            description: country.description
-        }));
+        if (matchingCountry) {
+            results.countries = matchingCountry.cities;
+        }
     }
 
     return results;
@@ -84,9 +85,18 @@ function displayRecommendations(data, searchQuery) {
     // Display filtered results
     let resultsFound = false;
     
-    for (const category in filteredResults) {
-        filteredResults[category].forEach(item => {
-            createResultElement(item.name, item.imageUrl, item.description);
+    // Display city results
+    if (filteredResults.cities.length > 0) {
+        filteredResults.cities.forEach(city => {
+            createResultElement(city.name, city.imageUrl, city.description);
+            resultsFound = true;
+        });
+    }
+
+    // Display country results
+    if (filteredResults.countries.length > 0) {
+        filteredResults.countries.forEach(city => {
+            createResultElement(city.name, city.imageUrl, city.description);
             resultsFound = true;
         });
     }
