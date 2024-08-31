@@ -74,7 +74,17 @@ nav a {
     background-color: #1abc9c;
 }
 
-.homePage {
+.homePage .aboutUs{
+    background-image: url('travel_photo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    min-height: 100vh; /* Ensure the div takes up at least the full height of the viewport */
+    padding-top: 0; /* Ensure no top padding */
+}
+
+.aboutUs{
     background-image: url('travel_photo.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -90,12 +100,25 @@ nav a {
     margin-left: 10%;
     font-weight: bold;
     font-size: 70px;
+}
 
+.aboutUs #aboutUsHead{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding-top: 5%; /* Use padding instead of margin for top spacing */
+    margin-left: 10%;
+    font-weight: bold;
+    font-size: 70px;
 }
 
 .homePage #homeText{
     margin-left: 10%
 }
+
+.aboutUs #aboutUsText{
+    background-color: rgba(96, 100, 107, 0.5);
+    margin-left: 10%
+}
+
 .homePage #btnBook{
     margin-left: 10%;
 }
