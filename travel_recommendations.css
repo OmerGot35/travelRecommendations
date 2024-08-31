@@ -94,6 +94,16 @@ nav a {
     padding-top: 0; /* Ensure no top padding */
 }
 
+.contactUs{
+    background-image: url('travel_photo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    min-height: 100vh; /* Ensure the div takes up at least the full height of the viewport */
+    padding-top: 0; /* Ensure no top padding */
+}
+
 .homePage #homeSlogan {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding-top: 5%; /* Use padding instead of margin for top spacing */
@@ -227,4 +237,63 @@ nav a {
     border-radius: 0.25rem;
     display: inline-block;
     font-size: 0.75rem;
+}
+.contactUs {
+    display: flex; /* Use flexbox for horizontal alignment */
+    align-items: flex-start; /* Align items at the top */
+    justify-content: space-between; /* Space between the header and the form */
+    background-image: url('travel_photo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    min-height: 100vh;
+    padding: 5%;
+}
+
+/* Header style */
+#contactUsHead {
+    font-size: 70px;
+    margin-right: 2rem; /* Space between the header and the form */
+    height: 50vh; /* Set height to 50% of the parent container */
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;}
+
+/* Contact form styles */
+#contactUsForm {
+    background-color: rgba(96, 100, 107, 0.5);
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 1rem;
+    font-size: 20px;
+    padding: 1rem;
+    width: 50%; /* Adjust the width as needed */
+}
+
+/* Transparent input boxes */
+#contactUsForm input[type="text"] {
+    background-color: transparent;
+    border: 1px solid white; /* Set border for visibility */
+    padding: 10px;
+    color: white; /* Text color */
+    font-size: 16px;
+    outline: none;
+}
+
+/* Input field hover and focus effects */
+#contactUsForm input[type="text"]:focus {
+    border-color: #1abc9c; /* Change border color on focus */
+}
+
+/* Responsive adjustments for contact section */
+@media (max-width: 768px) {
+    .contactUs {
+        flex-direction: column; /* Stack elements vertically on smaller screens */
+        align-items: center;
+    }
+
+    #contactUsForm {
+        width: 100%;
+    }
 }
