@@ -12,13 +12,62 @@ async function fetchRecommendations() {
     }
 }
 
-// Function to display recommendations
-function displayRecommendations(data) {
-    const searchBar = document.getElementById('searchBar');
-    const searchQuery = searchBar.value.toLowerCase();
-    const resultsContainer = document.getElementById('resultsContainer');
+// Function to match keywords
+function matchKeyword(input, keywords) {
+    input = input.toLowerCase();
+    return keywords.some(keyword => input.includes(keyword.toLowerCase()));
+}
 
-    resultsContainer.innerHTML = ''; // Clear previous results
+// Function to filter recommendations based on keyword
+function filterRecommendations(data, searchQuery) {
+    const results = {
+        beaches: [],
+        temples: [],
+        countries: []
+    };
+
+    if (matchKeyword(searchQuery, ['beach', 'beaches'])) {
+        results.beaches = data.beaches.slice(0, 2); // Get first two beaches
+    }
+
+    if (matchKeyword(searchQuery, ['temple', 'temples'])) {
+        results.temples = data.temples.slice(0, 2); // Get first two temples
+    }
+
+    if (matchKeyword(searchQuery, ['country', 'countries'])) {
+        results.countries = data.countries.slice(0, 2).map(country => ({
+            name: country.name,
+            imageUrl: country.imageUrl,
+            description: country.description
+        }));
+    }
+
+    return results;
+}
+
+// Function to display recommendations as popups
+function displayRecommendations(data, searchQuery) {
+    const filteredResults = filterRecommendations(data, searchQuery);
+    
+    // Create popup container if it doesn't exist
+    let popupContainer = document.getElementById('popupContainer');
+    if (!popupContainer) {
+        popupContainer = document.createElement('div');
+        popupContainer.id = 'popupContainer';
+        popupContainer.className = 'popup-container';
+        document.body.appendChild(popupContainer);
+    }
+    
+    popupContainer.innerHTML = ''; // Clear previous results
+    
+    // Add close button
+    const closeButton = document.createElement('span');
+    closeButton.className = 'close-popup';
+    closeButton.innerHTML = '&times;';
+    closeButton.onclick = () => {
+        popupContainer.style.display = 'none';
+    };
+    popupContainer.appendChild(closeButton);
 
     // Helper function to create and append a result item
     function createResultElement(name, imageUrl, description) {
@@ -29,43 +78,49 @@ function displayRecommendations(data) {
             <img src="${imageUrl}" alt="${name}" />
             <p>${description}</p>
         `;
-        resultsContainer.appendChild(resultElement);
+        popupContainer.appendChild(resultElement);
     }
 
-    // Iterate through the data and display matching results
-    data.countries.forEach(country => {
-        country.cities.forEach(city => {
-            if (city.name.toLowerCase().includes(searchQuery)) {
-                createResultElement(city.name, city.imageUrl, city.description);
-            }
+    // Display filtered results
+    let resultsFound = false;
+    
+    for (const category in filteredResults) {
+        filteredResults[category].forEach(item => {
+            createResultElement(item.name, item.imageUrl, item.description);
+            resultsFound = true;
         });
-    });
+    }
 
-    // Repeat similar logic for temples
-    data.temples.forEach(temple => {
-        if (temple.name.toLowerCase().includes(searchQuery)) {
-            createResultElement(temple.name, temple.imageUrl, temple.description);
-        }
-    });
-
-    // Repeat similar logic for beaches
-    data.beaches.forEach(beach => {
-        if (beach.name.toLowerCase().includes(searchQuery)) {
-            createResultElement(beach.name, beach.imageUrl, beach.description);
-        }
-    });
+    // Show popup if results were found
+    if (resultsFound) {
+        popupContainer.style.display = 'block';
+    } else {
+        popupContainer.style.display = 'none';
+        alert('No results found for your search.');
+    }
 }
 
 // Event listener for the search button
 document.getElementById('btnSearch').addEventListener('click', async () => {
+    const searchBar = document.getElementById('searchBar');
+    const searchQuery = searchBar.value.trim();
+    
+    if (searchQuery === '') {
+        alert('Please enter a search term.');
+        return;
+    }
+    
     const data = await fetchRecommendations();
     if (data) {
-        displayRecommendations(data);
+        displayRecommendations(data, searchQuery);
     }
 });
 
 // Event listener for the reset button
 document.getElementById('btnReset').addEventListener('click', () => {
     document.getElementById('searchBar').value = '';
-    document.getElementById('resultsContainer').innerHTML = ''; // Clear results
+    const popupContainer = document.getElementById('popupContainer');
+    if (popupContainer) {
+        popupContainer.style.display = 'none';
+    }
 });
